@@ -1,6 +1,5 @@
 import { ContextInitialStateTypes } from "../context/context";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const reducer = (state: ContextInitialStateTypes, action: any) => {
   switch (action.type) {
     case "ADD_MESSAGE": {
@@ -34,12 +33,14 @@ export const reducer = (state: ContextInitialStateTypes, action: any) => {
       // Return the updated state with the modified nodes array
       return { ...state, nodes: updatedNodes };
     }
-    case 'ADD_NODE': 
-      return { ...state, nodes: [...state.nodes, action.payload.node] }
-    case 'ADD_EDGES': 
-      return { ...state, edges: action.payload.edges}
-    case 'ADD_POSITION': 
-      return { ...state, nodes: action.payload.nodes }
+    case "ADD_NODE":
+      return { ...state, nodes: [...state.nodes, action.payload.node] };
+    case "ADD_EDGES":
+      return { ...state, edges: action.payload.edges };
+    case "ADD_POSITION":
+      return { ...state, nodes: action.payload.nodes };
+    case "CLOSE_SETTING_PANEL":
+      return { ...state, isShowNodePanel: true };
     default:
       return state;
   }

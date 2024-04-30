@@ -11,7 +11,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { useSettingPanel } from "../../context/context";
-import CustomNodes from './CustomNodes/CustomNodes'
+import CustomNodes from "./CustomNodes/CustomNodes";
 
 type FlowBuilderPropTypes = {
   nodes: Node[];
@@ -22,24 +22,24 @@ type FlowBuilderPropTypes = {
 type Connection = {
   source: string;
   target: string;
-}
+};
 
 const Initaledges: Edge[] = [];
 
-const nodeTypes = {
+const nodeTypes: any = {
   selectorNode: CustomNodes,
 };
 
 const FlowBuilder = ({ nodes, setNodes }: FlowBuilderPropTypes) => {
-  const [edges, setEdges , onEdgesChange] = useEdgesState(Initaledges);
-  const { state , dispatch } = useSettingPanel();
+  const [edges, setEdges, onEdgesChange] = useEdgesState(Initaledges);
+  const { state, dispatch } = useSettingPanel();
   const [connections, setConnections] = useState<Connection[]>([]);
 
   const [{ isOver }, drop] = useDrop({
     accept: "NODE_MESSAGE",
     drop: () => {
       dispatch({
-        type: 'ADD_NODE',
+        type: "ADD_NODE",
         payload: {
           node: {
             id: JSON.stringify(nodes.length + 1),
@@ -50,10 +50,10 @@ const FlowBuilder = ({ nodes, setNodes }: FlowBuilderPropTypes) => {
             data: { label: "New Message" },
             sourcePosition: Position.Right,
             targetPosition: Position.Left,
-            type: 'selectorNode'
-          }
-        }
-      })
+            type: "selectorNode",
+          },
+        },
+      });
     },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
@@ -63,35 +63,40 @@ const FlowBuilder = ({ nodes, setNodes }: FlowBuilderPropTypes) => {
   const onNodesChange = useCallback(
     (changes) => {
       dispatch({
-        type: 'ADD_POSITION',
+        type: "ADD_POSITION",
         payload: {
-          nodes: applyNodeChanges(changes, state.nodes)
-        }
-      })
-      setNodes((nds) => applyNodeChanges(changes, nds))
+          nodes: applyNodeChanges(changes, state.nodes),
+        },
+      });
+      setNodes((nds) => applyNodeChanges(changes, nds));
     },
-    [nodes]
+    [setNodes , dispatch , state.nodes]
   );
 
   const onConnect = useCallback(
     (connection) => {
-      const sourceNodeHasConnection = connections.some((conn) => conn.source === connection.source);
+      const sourceNodeHasConnection = connections.some(
+        (conn) => conn.source === connection.source
+      );
       if (sourceNodeHasConnection) {
         // Prevent creation of new edge
         return null;
       }
-      
-      setConnections([...connections, { source: connection.source, target: connection.target }]);
+
+      setConnections([
+        ...connections,
+        { source: connection.source, target: connection.target },
+      ]);
       const edge = { ...connection, type: "custom-edge" };
       setEdges((eds) => addEdge(edge, eds));
       dispatch({
-        type: 'ADD_EDGES',
+        type: "ADD_EDGES",
         payload: {
-          edges: addEdge(edge, edges)
-        }
-      })
+          edges: addEdge(edge, edges),
+        },
+      });
     },
-    [connections, setEdges]
+    [connections, setEdges , dispatch , edges]
   );
 
   return (

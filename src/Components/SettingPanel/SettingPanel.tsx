@@ -5,11 +5,13 @@ import { getMessageById } from "../../utils/getMessageById";
 
 const SettingPanel = () => {
   const { state, dispatch } = useSettingPanel();
-  const [message, setMessage] = useState<string>(getMessageById(state.nodes, state.MessageToEdit));
+  const [message, setMessage] = useState<string>(
+    getMessageById(state.nodes, state.MessageToEdit)
+  );
 
   useEffect(() => {
     setMessage(getMessageById(state.nodes, state.MessageToEdit));
-  }, [state.nodes , state.MessageToEdit]);
+  }, [state.nodes, state.MessageToEdit]);
 
   return (
     <div className="flex-1 border border-2 border-gray-300 h-[100%]">

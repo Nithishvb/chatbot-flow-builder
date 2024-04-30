@@ -10,12 +10,13 @@ export type ContextInitialStateTypes = {
 };
 
 export type Action =
-  | { type: "ADD_MESSAGE" }
+  | { type: "ADD_MESSAGE" ,  payload: any }
   | { type: "REMOVE_MESSAGE" }
-  | { type: "EDIT_NODE_MESSAGE" }
-  | { type: "ADD_NODE" }
-  | { type: "ADD_EDGES" }
-  | { type: "ADD_POSITION" };
+  | { type: "EDIT_NODE_MESSAGE" , payload: any }
+  | { type: "ADD_NODE" , payload: any }
+  | { type: "ADD_EDGES" , payload: any }
+  | { type: "ADD_POSITION" , payload: any }
+  | { type: "CLOSE_SETTING_PANEL"};
 
 // Define an initial state
 const initialState: ContextInitialStateTypes = {
@@ -40,7 +41,7 @@ const initialState: ContextInitialStateTypes = {
 const SettingPanelContext = createContext<{
   state: ContextInitialStateTypes;
   dispatch: React.Dispatch<Action>;
-}>();
+}>(null);
 
 // Create a custom hook to use the context
 export const useSettingPanel = () => useContext(SettingPanelContext);

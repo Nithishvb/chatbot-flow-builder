@@ -22,7 +22,9 @@ const CustomNodes = ({ data }: Node) => {
             <IoLogoWhatsapp className="text-green-500 text-center text-xs" />
           </div>
         </div>
-        <div className="p-3 bg-white rounded-b-lg font-semibold">{data.label}</div>
+        <div className="p-3 bg-white rounded-b-lg font-semibold">
+          {data.label}
+        </div>
       </div>
       <Handle
         type="source"
