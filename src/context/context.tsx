@@ -1,42 +1,52 @@
 import React, { ReactNode, createContext, useContext, useReducer } from "react";
+import { reducer } from "../reducer/settingPanelReducer";
+import { Edge, Node, Position } from "reactflow";
 
-type ContextInitialStateTypes = {
+export type ContextInitialStateTypes = {
+  nodes: Node[];
   isShowNodePanel: boolean;
   MessageToEdit: string;
+  edges: Edge[];
 };
 
-type Action = { type: "INCREMENT" } | { type: "DECREMENT" };
+export type Action =
+  | { type: "ADD_MESSAGE" }
+  | { type: "REMOVE_MESSAGE" }
+  | { type: "EDIT_NODE_MESSAGE" }
+  | { type: "ADD_NODE" }
+  | { type: "ADD_EDGES" }
+  | { type: "ADD_POSITION" };
 
 // Define an initial state
 const initialState: ContextInitialStateTypes = {
+  nodes: [
+    {
+      id: "1",
+      position: { x: 500, y: 200 },
+      data: { label: "Hello" },
+      sourcePosition: Position.Right,
+      targetPosition: Position.Left,
+      type: "selectorNode",
+    },
+  ],
   isShowNodePanel: true,
   MessageToEdit: "",
+  edges: [],
 };
 
 // Define a reducer function to handle state updates
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const reducer = (state: ContextInitialStateTypes, action: any) => {
-  switch (action.type) {
-    case "ADD_MESSAGE":
-      return { ...state, MessageToEdit: action.payload.message };
-    case "REMOVE_MESSAGE":
-      return { ...state, MessageToEdit: "" };
-    default:
-      return state;
-  }
-};
 
 // Create a context
-const SettingPanelContext = createContext<
-  | { state: ContextInitialStateTypes; dispatch: React.Dispatch<Action> }
-  | undefined
->(undefined);
+const SettingPanelContext = createContext<{
+  state: ContextInitialStateTypes;
+  dispatch: React.Dispatch<Action>;
+}>();
 
 // Create a custom hook to use the context
 export const useSettingPanel = () => useContext(SettingPanelContext);
 
 // Create a provider component to wrap your app
-export const CounterProvider: React.FC<{ children: ReactNode }> = ({
+export const SettingPanelProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
