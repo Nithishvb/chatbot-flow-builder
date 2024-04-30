@@ -112,7 +112,7 @@ const FlowBuilder = ({ nodes, setNodes }: FlowBuilderPropTypes) => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
-        onNodeClick={(e, node) => {
+        onNodeClick={(_, node) => {
           dispatch({
             type: "ADD_MESSAGE",
             payload: {
